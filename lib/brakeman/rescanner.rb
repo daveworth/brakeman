@@ -262,10 +262,9 @@ Fixed warnings: #{fixed_warnings.length}
 New warnings: #{new_warnings.length}
     OUTPUT
     else
-      existing_warnings = all_warnings - new_warnings
-
       "".tap do |out|
-        {:fixed => fixed_warnings, :new => new_warnings, :existing => existing_warnings}.each do |warning_type, warnings|
+        [:fixed, :new, :existing].each do |warning_type|
+          warnings = self.send("#{warning_type.to_s}_warnings")
           if warnings.length > 0
             out << "#{warning_type.to_s.titleize} warnings: #{warnings.length}\n"
             table = Ruport::Data::Table(["Confidence", "Class", "Method", "Warning Type", "Message"])
